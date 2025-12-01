@@ -1,17 +1,19 @@
 const { ethers } = require("hardhat");
 
 async function main() {
-  const [deployer] = await ethers.getSigners();
-  console.log("Deploying with account:", deployer.address);
+  const Registry = await ethers.getContractFactory("CertificateRegistry");
 
-  const CertificateRegistry = await ethers.getContractFactory("CertificateRegistry");
-  const contract = await CertificateRegistry.deploy();
+  console.log("Deploying CertificateRegistry...");
 
-  await contract.waitForDeployment(); 
-  console.log("Contract deployed to:", contract.target); 
+  const reg = await Registry.deploy();
+
+  // Yeni Hardhat/Ethers modunda deployment böyle beklenir:
+  await reg.waitForDeployment();
+
+  console.log("CertificateRegistry deployed at:", reg.target);
 }
 
-main().catch((error) => {
-    console.error(error);
-    process.exit(1);
+main().catch((err) => {
+  console.error(err);
+  process.exit(1);
 });

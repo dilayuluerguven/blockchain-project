@@ -13,6 +13,7 @@
   "dependencies": {
     "dotenv": "^17.2.3",
     "ethers": "^6.15.0",
-    "readline-sync": "^1.4.10"
+    "readline-sync": "^1.4.10",
+    "uuid": "^13.0.0"
   }
 }

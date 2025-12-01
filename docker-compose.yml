@@ -1,4 +1,5 @@
 version: "3.8"
+
 services:
   ganache:
     image: trufflesuite/ganache:latest
@@ -22,11 +23,11 @@ services:
     working_dir: /app
     volumes:
       - ./client:/app
+    depends_on: [hardhat]
     environment:
       RPC_URL: http://ganache:8545
-    depends_on: [hardhat]
     networks: [certnet]
-    command: ["bash","-lc","npm ci && npm run start"]
+    command: ["bash","-lc","npm ci && node index.js"]
 
 networks:
   certnet:

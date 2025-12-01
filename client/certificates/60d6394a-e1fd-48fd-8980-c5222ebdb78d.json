@@ -1,0 +1,11 @@
+{
+  "id": "60d6394a-e1fd-48fd-8980-c5222ebdb78d",
+  "idBytes32": "0x8572fefa28fd12642e4b0ef5871cb99e347cfe5bd5420ab8d9061e1142fface9",
+  "studentId": "1234",
+  "fullName": "dilay",
+  "title": "Blockchain egitimi",
+  "issuer": "Ktun",
+  "expiresAt": 0,
+  "salt": "7b81cbaf-7a40-4e67-b9eb-b28087931008",
+  "holderHash": "0xb805b80e6ff3730789946c08dac2a62ad8d0b248c0e757bdcf6b67c4bf60cda3"
+}
