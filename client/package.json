@@ -15,5 +15,8 @@
     "ethers": "^6.15.0",
     "readline-sync": "^1.4.10",
     "uuid": "^13.0.0"
+  },
+  "devDependencies": {
+    "hardhat": "^3.0.16"
   }
 }

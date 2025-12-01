@@ -1,33 +1,38 @@
 version: "3.8"
 
 services:
+
   ganache:
     image: trufflesuite/ganache:latest
     command: ["--host","0.0.0.0","--chain.chainId","1337","--wallet.totalAccounts","10","--miner.blockTime","1"]
     ports:
       - "8545:8545"
-    networks: [certnet]
+    networks:
+      - certnet
 
   hardhat:
     image: node:20
     working_dir: /workspace
     volumes:
       - ./dapp:/workspace
-    depends_on: [ganache]
-    networks: [certnet]
-    command: >
-      bash -lc "npm ci && npx hardhat compile && sleep infinity"
+    depends_on:
+      - ganache
+    networks:
+      - certnet
+    command: ["sh", "-c", "./node_modules/.bin/hardhat compile && sleep infinity"]
 
   client:
     image: node:20
     working_dir: /app
     volumes:
       - ./client:/app
-    depends_on: [hardhat]
+    depends_on:
+      - hardhat
     environment:
       RPC_URL: http://ganache:8545
-    networks: [certnet]
-    command: ["bash","-lc","npm ci && node index.js"]
+    networks:
+      - certnet
+    command: ["sh", "-c", "node index.js"]
 
 networks:
   certnet:
