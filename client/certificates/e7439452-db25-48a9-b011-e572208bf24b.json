@@ -1,0 +1,11 @@
+{
+  "id": "e7439452-db25-48a9-b011-e572208bf24b",
+  "idBytes32": "0x99e0454c76a2a16b48bdaed6955797d342cc6e6e866e0113af75cb0770bb5137",
+  "studentId": "12345",
+  "fullName": "duluv",
+  "title": "blocks",
+  "issuer": "ktun",
+  "expiresAt": 0,
+  "salt": "2ee87667-db64-4c03-a19e-3a728c3adf1e",
+  "holderHash": "0x18851f377805c15c562d560738dbe3c8b865bf117449ddfcc46a35662030802a"
+}

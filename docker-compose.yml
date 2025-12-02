@@ -26,13 +26,11 @@ services:
     working_dir: /app
     volumes:
       - ./client:/app
-    depends_on:
-      - hardhat
+    depends_on: [hardhat]
     environment:
       RPC_URL: http://ganache:8545
-    networks:
-      - certnet
-    command: ["sh", "-c", "node index.js"]
+    networks: [certnet]
+    command: ["bash","-lc","sleep infinity"]
 
 networks:
   certnet:
