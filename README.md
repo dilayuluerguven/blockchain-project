@@ -1,13 +1,12 @@
 1. Kurulum Adımları
 
 Bu proje dizin yapısı:
-
+```
 blockchain_project/
  ├── dapp/          (Hardhat – Contract + Deploy + Test)
  ├── client/        (CLI İstemci)
  └── docker-compose.yml
-
-
+```
 Her şey proje klasörü içinde hazırdır, yalnızca Docker ile çalıştırmanız yeterlidir.
 
 1.1. Docker Servislerini Başlatın
