@@ -136,3 +136,6 @@ client/
  ├── index.js
  └── .env
 ```
+## 🎬 Demo Videosu
+
+[Demo Videosunu İzle](./demo/Blockchain_Demo.mp4)
