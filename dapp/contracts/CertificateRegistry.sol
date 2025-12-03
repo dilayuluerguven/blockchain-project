@@ -5,11 +5,11 @@ contract CertificateRegistry {
     address public owner;
 
     struct Certificate {
-        bytes32 id;           // sertifika UUID / hex
-        bytes32 holderHash;   // kişisel veri hash'i
-        string  title;        // sertifika adı
-        string  issuer;       // kurum adı
-        uint64  issuedAt;     // oluşturulma zamanı
+        bytes32 id;           // Sertifika UUID -> bytes32
+        bytes32 holderHash;   // ÖğrenciNo + İsim + Salt hash'i
+        string  title;        // Sertifika başlığı
+        string  issuer;       // Kurum adı
+        uint64  issuedAt;     // Oluşturulma zamanı
         uint64  expiresAt;    // 0 = süresiz
         bool    revoked;      // iptal durumu
     }
@@ -39,6 +39,9 @@ contract CertificateRegistry {
         owner = msg.sender;
     }
 
+    // ====================================================
+    // ISSUE CERTIFICATE
+    // ====================================================
     function issue(
         bytes32 id,
         bytes32 holderHash,
@@ -68,8 +71,12 @@ contract CertificateRegistry {
         );
     }
 
+    // ====================================================
+    // REVOKE CERTIFICATE
+    // ====================================================
     function revoke(bytes32 id) external onlyOwner {
         Certificate storage c = certificates[id];
+
         require(c.issuedAt != 0, "not found");
         require(!c.revoked, "already revoked");
 
@@ -78,28 +85,41 @@ contract CertificateRegistry {
         emit CertificateRevoked(id, uint64(block.timestamp));
     }
 
+    // ====================================================
+    // VERIFY CERTIFICATE
+    // (Frontend’in beklediği *tam format*)
+    // ====================================================
     function verify(bytes32 id, bytes32 holderHash)
         external
         view
         returns (
-            bool valid,
-            bool isRevoked,
-            uint64 issuedAt,
-            uint64 expiresAt,
-            string memory title,
-            string memory issuer
+            bool valid,        // [0]
+            bool isRevoked,    // [1]
+            uint64 issuedAt,   // [2]
+            uint64 expiresAt,  // [3]
+            string memory title,   // [4]
+            string memory issuer   // [5]
         )
     {
         Certificate memory c = certificates[id];
 
+        // Sertifika yoksa:
         if (c.issuedAt == 0) {
             return (false, false, 0, 0, "", "");
         }
 
+        // Geçerli mi?
         bool ok = !c.revoked &&
                   c.holderHash == holderHash &&
                   (c.expiresAt == 0 || c.expiresAt >= block.timestamp);
 
-        return (ok, c.revoked, c.issuedAt, c.expiresAt, c.title, c.issuer);
+        return (
+            ok,
+            c.revoked,
+            c.issuedAt,
+            c.expiresAt,
+            c.title,
+            c.issuer
+        );
     }
 }

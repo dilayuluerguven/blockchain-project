@@ -1,9 +1,9 @@
-import 'dotenv/config';
-import { ethers, keccak256, toUtf8Bytes } from "ethers";
-import readlineSync from "readline-sync";
-import fs from "fs";
-import path from "path";
-import { v4 as uuidv4 } from "uuid";
+require('dotenv').config();
+const { ethers, keccak256, toUtf8Bytes } = require("ethers");
+const readlineSync = require("readline-sync");
+const fs = require("fs");
+const path = require("path");
+const { v4: uuidv4 } = require("uuid");
 
 const abiJson = JSON.parse(fs.readFileSync("./CertificateRegistry.json", "utf8"));
 
@@ -25,14 +25,15 @@ function generateHolderHash(studentId, fullName, salt) {
 }
 
 function uuidToBytes32(uuid) {
-  return keccak256(toUtf8Bytes(uuid)); 
+  return keccak256(toUtf8Bytes(uuid));
 }
 
-
-console.log(`\n Certificate Registry CLI
+console.log(`
+ Certificate Registry CLI
 1) Sertifika Olustur (issue)
-2) Sertifika Doğrula (verify)
-3) Sertifika İptal Et (revoke)\n`);
+2) Sertifika Dogrula (verify)
+3) Sertifika Iptal Et (revoke)
+`);
 
 const choice = readlineSync.question("Secim (1/2/3): ");
 
@@ -50,10 +51,11 @@ async function issueCert() {
   const salt = uuidv4();
   const holderHash = generateHolderHash(studentId, fullName, salt);
 
-  console.log("\n İslem gönderiliyor...");
+  console.log("\n Islem gönderiliyor...");
   const tx = await contract.issue(idBytes32, holderHash, title, issuer, expiresAt);
   await tx.wait();
-  console.log("\nSertifika zincire yazildi!");
+
+  console.log("Sertifika zincire yazildi! Tx:", tx.hash);
 
   const certData = {
     id,
@@ -74,7 +76,7 @@ async function issueCert() {
 }
 
 async function verifyCert() {
-  console.log("\nSertifika Doğrula ");
+  console.log("\n Sertifika Dogrula ");
 
   const id = readlineSync.question("Sertifika ID (UUID): ");
   const certFile = `./certificates/${id}.json`;
@@ -89,7 +91,7 @@ async function verifyCert() {
 
   const result = await contract.verify(idBytes32, holderHash);
 
-  console.log("\n Doğrulama Sonucu ");
+  console.log("\n Dogrulama Sonucu ");
   console.log("Gecerli mi?        :", result[0]);
   console.log("İptal edilmis mi?  :", result[1]);
   console.log("Olusturulma        :", result[2].toString());
@@ -99,7 +101,7 @@ async function verifyCert() {
 }
 
 async function revokeCert() {
-  console.log("\n Sertifika İptal Et ");
+  console.log("\n Sertifika Iptal Et ");
 
   const id = readlineSync.question("Sertifika ID (UUID): ");
   const certFile = `./certificates/${id}.json`;
@@ -112,7 +114,7 @@ async function revokeCert() {
   const certData = JSON.parse(fs.readFileSync(certFile));
   const idBytes32 = certData.idBytes32;
 
-  console.log("İptal islemi gönderiliyor...");
+  console.log("Iptal islemi gönderiliyor...");
   const tx = await contract.revoke(idBytes32);
   await tx.wait();
 
